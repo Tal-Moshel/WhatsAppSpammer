@@ -1,3 +1,4 @@
+# region imports
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,17 +7,20 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 from webdriver_manager.chrome import ChromeDriverManager
+# endregion
 
+# Initialises driver object with properties(options)
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
 driver = webdriver.Chrome(
     ChromeDriverManager().install(), chrome_options=options)
 
 
+# Loads whatsapp-web to the window and waits
 driver.get("https://web.whatsapp.com/")
 wait = WebDriverWait(driver, 600)
 
-print("----------------------------------------------------------------------------------")
+# Asks for the contact name, message to send and amount
 name = str(input('Enter Group/Contanct Name: '))
 msg = str(input('Enter message: '))
 count = int(input('Enter the count: '))
@@ -24,14 +28,18 @@ count = int(input('Enter the count: '))
 # Scan the code before proceeding further
 input('Enter anything after scanning QR code')
 
+# Clicks on the selected user
 user = driver.find_element_by_xpath('//span[@title = "{}"]'.format(name))
 user.click()
 
+# Variable for the message box
 msg_box = driver.find_element_by_xpath(
     "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div[2]/div/div[2]")
 
+# Executes the amount of times specified in the COUNT variable
 for i in range(count):
+    # Types the message to send
     msg_box.send_keys(msg)
-    # should replace the button's parent
+    # Clicks the send button
     driver.find_element_by_xpath(
         "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div[3]").click()
